@@ -95,6 +95,10 @@ class Caixa:
             'vendas': self.__vendas.copy()
         }
 
+    def obter_resumo_vendas(self):
+        return self.__gerar_resumo_vendas()
+
+
     def __exibir_resumo_vendas(self, resumo):
         print("\n--- Resumo de Vendas do Dia ---")
         print(f"Total de itens vendidos: {resumo['total_itens']}")

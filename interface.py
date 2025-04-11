@@ -149,18 +149,23 @@ class Aplicacao:
             messagebox.showerror("Erro", str(e))
 
     def resumo_vendas(self):
-        vendas = self.caixa._Caixa__vendas_dia
+        resumo = self.caixa.obter_resumo_vendas()
+        vendas = resumo['vendas']
+
         if not vendas:
             messagebox.showinfo("Vendas", "Nenhuma venda registrada hoje.")
             return
 
         texto = ""
         for venda in vendas:
-            hora = venda["data"].strftime("%H:%M:%S")
             total = venda["total"]
-            texto += f"Venda às {hora} - Total: R${total:.2f}\n"
+            texto += f"Venda - Total: R${total:.2f}\n"
+
+        texto += f"\nTotal de itens vendidos: {resumo['total_itens']}"
+        texto += f"\nValor total: R${resumo['total_valor']:.2f}"
 
         messagebox.showinfo("Resumo de Vendas", texto)
+
 
     def cadastrar_fornecedor(self):
         nome = simpledialog.askstring("Fornecedor", "Nome do fornecedor:")
