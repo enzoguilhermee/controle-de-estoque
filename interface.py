@@ -82,8 +82,18 @@ class Aplicacao:
     
     
     def fechar_caixa(self):
-        self.caixa.fechar_caixa()
-        return messagebox.showinfo("Seja bem-vindo(a)!", "Caixa fechado com sucesso!")
+        resumo = self.caixa.fechar_caixa()
+    
+        if resumo:
+            resumo_texto = (
+                "--- Resumo de Vendas do Dia ---\n"
+                f"Total de itens vendidos: {resumo['total_itens']}\n"
+                f"Valor total: R${resumo['total_valor']:.2f}"
+            )
+        else:
+            resumo_texto = "--- Resumo de Vendas do Dia ---\nNenhuma venda registrada."
+    
+        messagebox.showinfo("Caixa Fechado", f"Caixa fechado com sucesso!\n\n{resumo_texto}")
 
     def adicionar_produto(self):
         try:
