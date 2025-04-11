@@ -18,7 +18,7 @@ class Aplicacao:
 
         # Dados
         self.estoque = Estoque()
-        self.caixa = Caixa()
+        self.caixa = Caixa(self.estoque)
         self.fornecedores = []
 
         self.tela_login()
