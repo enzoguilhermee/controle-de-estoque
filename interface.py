@@ -84,28 +84,19 @@ class Aplicacao:
         self.caixa.fechar_caixa()
         return messagebox.showinfo("Volte sempre!", "Caixa fechado com sucesso!")
     
-def adicionar_produto(self):
-    try:
-        nome = simpledialog.askstring("Produto", "Nome do produto:")
-        if not nome:
-            return
+    def adicionar_produto(self):
+        try:
+            nome = simpledialog.askstring("Produto", "Nome do produto:")
+            preco = float(simpledialog.askstring("Produto", "Preço:"))
+            quantidade = int(simpledialog.askstring("Produto", "Quantidade:"))
+            validade = simpledialog.askstring("Produto", "Validade (YYYY-MM-DD):")
+            sessao = simpledialog.askstring("Produto", "Sessão (ex: Laticínios, Grãos):")
 
-        preco_str = simpledialog.askstring("Produto", "Preço:")
-        quantidade_str = simpledialog.askstring("Produto", "Quantidade:")
-        validade = simpledialog.askstring("Produto", "Validade (YYYY-MM-DD):")
-        sessao = simpledialog.askstring("Produto", "Sessão (ex: Laticínios, Grãos):")
-
-        if not all([preco_str, quantidade_str, validade, sessao]):
-            return
-
-        preco = float(preco_str)
-        quantidade = int(quantidade_str)
-
-        produto = Produto(nome, preco, quantidade, validade, sessao)
-        self.estoque.adicionar_produto(produto)
-        messagebox.showinfo("Sucesso", f"Produto {nome} adicionado!")
-    except Exception as e:
-        messagebox.showerror("Erro", str(e))
+            produto = Produto(nome, preco, quantidade, validade, sessao)
+            self.estoque.adicionar_produto(produto)
+            messagebox.showinfo("Sucesso", f"Produto {nome} adicionado!")
+        except Exception as e:
+            messagebox.showerror("Erro", str(e))
 
     def listar_estoque(self):
         produtos = self.estoque.listar_produtos()
