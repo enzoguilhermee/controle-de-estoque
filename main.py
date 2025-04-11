@@ -10,7 +10,7 @@ fornecedor2 = Fornecedor("Fornecedor B", "98765432000199", "fornecedorB@email.co
 # Criando produtos
 produto1 = Produto("Notebook", 15, 3500.00, "2025-12-31", "ELE", "ELE0001")
 produto2 = Produto("Mouse", 25, 80.00, "2026-06-15", "INF", "INF0002")
-produto3 = Produto("Teclado Mecânico", 10, 280, "2027-06-15", "INF", "INF0003")
+produto3 = Produto("Teclado Mecânico", 10, 280.00, "2027-06-15", "INF", "INF0003")
 
 # Criando e configurando estoque
 estoque = Estoque()
@@ -24,16 +24,17 @@ caixa = Caixa(estoque)
 # Listando produtos no estoque
 print("\n=== ESTOQUE INICIAL ===")
 for p in estoque.get_produtos():
-    p.exibir_dados()
+    if isinstance(p, Produto):  # Garantindo que é um Produto
+        p.exibir_dados()
 
-# Processando vendas através do caixa
+# Abrindo o caixa e processando vendas
 print("\n==> ABRINDO CAIXA E PROCESSANDO VENDAS...")
 caixa.abrir_caixa()
 
 vendas = [
-    {'codigo': 'ELE0001', 'quantidade': 5},   # Vendendo 5 notebooks
-    {'codigo': 'INF0002', 'quantidade': 12},  # Vendendo 12 mouses
-    {'codigo': 'INF0003', 'quantidade': 2}    # Vendendo 2 teclados mecânicos
+    {'codigo': 'ELE0001', 'quantidade': 5},
+    {'codigo': 'INF0002', 'quantidade': 12},
+    {'codigo': 'INF0003', 'quantidade': 2}
 ]
 
 caixa.finalizar_compra(vendas)
@@ -45,13 +46,14 @@ resumo = caixa.fechar_caixa()
 # Exibindo estoque atualizado
 print("\n=== ESTOQUE APÓS VENDAS ===")
 for p in estoque.get_produtos():
-    p.exibir_dados()
+    if isinstance(p, Produto):  # Garantindo que é um Produto
+        p.exibir_dados()
 
 # Exibindo alertas de estoque baixo
 print("\n=== ALERTAS DE ESTOQUE ===")
 caixa.emitir_alerta_estoque_baixo()
 
-# Exibindo resumo detalhado das vendas
+# Exibindo resumo financeiro
 print("\n=== RESUMO FINANCEIRO ===")
 print(f"Total de itens vendidos: {resumo['total_itens']}")
 print(f"Valor total vendido: R${resumo['total_valor']:.2f}")
@@ -60,3 +62,4 @@ for i, venda in enumerate(resumo['vendas'], 1):
     print(f"\nVenda {i}:")
     for item in venda['itens']:
         print(f" - {item['nome']} ({item['codigo']}): {item['quantidade']}x R${item['preco_unitario']:.2f} = R${item['total']:.2f}")
+

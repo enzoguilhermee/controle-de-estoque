@@ -106,18 +106,19 @@ class Caixa:
         print("-------------------------------")
 
     def emitir_alerta_estoque_baixo(self):
+        produtos_dict = self.__estoque.get_produtos()  # Agora espera um dicionário
         alertas = [
-            produto for produto in self.__estoque.get_produtos()
+            produto for produto in produtos_dict.values()
             if produto.get_quantidade() <= 10
         ]
-        
+
         if alertas:
-            print("\n--- Alertas de Estoque Baixo ---")
+            print("Produtos com estoque baixo:")
             for produto in alertas:
-                print(f"{produto.get_codigo()} - {produto.get_nome()} ({produto.get_quantidade()} unidades)")
-            print("-------------------------------")
+                print(f"- {produto.get_nome()} ({produto.get_codigo()}): {produto.get_quantidade()} unidades")
         else:
-            print("Nenhum alerta de estoque baixo.")
+            print("Nenhum produto com estoque baixo.")
+
 
     def desfazer_ultima_venda(self):
         if not self.__vendas:
