@@ -2,7 +2,7 @@ from produto import Produto
 
 class Estoque:
     def __init__(self):
-        self.__produtos = []
+        self.__produtos = {}
         self.__sessoes = []
 
 
@@ -25,12 +25,17 @@ class Estoque:
         else:
             raise TypeError("A nova lista de produtos deve ser uma lista válida.")
         
-    def adicionar_produto(self,produto):
+    def adicionar_produto(self, produto):
         if isinstance(produto, Produto):
-            self.__produtos.append(produto)
-            print(f"Produto {produto.get_nome()} adicionado ao estoque com sucesso!")
+            codigo = produto.get_codigo()
+            if codigo in self.__produtos:
+                print(f"Produto com código {codigo} já existe no estoque.")
+            else:
+                self.__produtos[codigo] = produto
+                print(f"Produto {produto.get_nome()} adicionado ao estoque com sucesso!")
         else:
             raise TypeError("O item adicionado deve ser uma instância da classe Produto.")
+
         
 
     # Usa get_codigo() para comparar, se o produto for encontrado e tiver estoque suficiente, reduz, Caso contrário levanta erro com raise.
@@ -71,8 +76,9 @@ class Estoque:
     def listar_produtos(self):
         if not self.__produtos:
             print("Estoque vazio.")
-            return
-        for produto in self.__produtos:
+            return self.__produtos
+
+        for produto in self.__produtos.values():
             print(f"Produto: {produto.get_nome()}")
             print(f"  Código: {produto.get_codigo()}")
             print(f"  Quantidade: {produto.get_quantidade()}")
@@ -80,3 +86,6 @@ class Estoque:
             print(f"  Validade: {produto.get_validade()}")
             print(f"  Sessão: {produto.get_sessao()}")
             print("-" * 30)
+
+        return self.__produtos
+
