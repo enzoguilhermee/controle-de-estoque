@@ -1,5 +1,3 @@
-from produto import Produto
-
 class Caixa:
     def __init__(self, estoque):
         self.__estoque = estoque
@@ -21,10 +19,7 @@ class Caixa:
         
         self.__caixa_aberto = False
         resumo = self.__gerar_resumo_vendas()
-        print("\n--- Resumo de Vendas do Dia ---")
-        print(f"Total de itens vendidos: {resumo['total_itens']}")
-        print(f"Valor total: R${resumo['total_valor']:.2f}")
-        print("-------------------------------")
+        self.__exibir_resumo_vendas(resumo)
         self.__vendas = []
         return resumo
 
@@ -46,35 +41,38 @@ class Caixa:
                 print(f"Produto com código {codigo} não encontrado. Item ignorado.")
                 continue
 
-            if produto.get_quantidade() < quantidade:
-                print(f"Estoque insuficiente para {produto.get_nome()}. Item ignorado.")
+            estoque_atual = produto.get_quantidade()
+            nome = produto.get_nome()
+            preco = produto.get_preco()
+
+            if estoque_atual < quantidade:
+                print(f"Estoque insuficiente para {nome}. Item ignorado.")
                 continue
 
             # Atualiza estoque
-            nova_quantidade = produto.get_quantidade() - quantidade
+            nova_quantidade = estoque_atual - quantidade
             produto.set_quantidade(nova_quantidade)
 
-            # Verifica alerta
             if nova_quantidade <= 10:
-                print(f"ALERTA: {produto.get_nome()} está com apenas {nova_quantidade} unidades em estoque!")
+                print(f"ALERTA: {nome} está com apenas {nova_quantidade} unidades em estoque!")
 
-            # Registra item na venda
-            total_item = quantidade * produto.get_preco()
-            venda_item = {
+            total_item = quantidade * preco
+            venda['itens'].append({
                 'codigo': codigo,
-                'nome': produto.get_nome(),
+                'nome': nome,
                 'quantidade': quantidade,
-                'preco_unitario': produto.get_preco(),
+                'preco_unitario': preco,
                 'total': total_item
-            }
-            venda['itens'].append(venda_item)
+            })
             venda['total'] += total_item
 
         if venda['itens']:
             self.__vendas.append(venda)
             print("Compra finalizada com sucesso!")
+            return venda  # opcional: retorna a venda feita
         else:
             print("Nenhum item válido para finalizar a compra.")
+            return None
 
     def __buscar_produto_por_codigo(self, codigo):
         for produto in self.__estoque.get_produtos():
@@ -91,11 +89,17 @@ class Caixa:
             'vendas': self.__vendas.copy()
         }
 
+    def __exibir_resumo_vendas(self, resumo):
+        print("\n--- Resumo de Vendas do Dia ---")
+        print(f"Total de itens vendidos: {resumo['total_itens']}")
+        print(f"Valor total: R${resumo['total_valor']:.2f}")
+        print("-------------------------------")
+
     def emitir_alerta_estoque_baixo(self):
-        alertas = []
-        for produto in self.__estoque.get_produtos():
-            if produto.get_quantidade() <= 10:
-                alertas.append(produto)
+        alertas = [
+            produto for produto in self.__estoque.get_produtos()
+            if produto.get_quantidade() <= 10
+        ]
         
         if alertas:
             print("\n--- Alertas de Estoque Baixo ---")
@@ -104,3 +108,15 @@ class Caixa:
             print("-------------------------------")
         else:
             print("Nenhum alerta de estoque baixo.")
+
+    def desfazer_ultima_venda(self):
+        if not self.__vendas:
+            print("Nenhuma venda para desfazer.")
+            return
+
+        ultima_venda = self.__vendas.pop()
+        for item in ultima_venda['itens']:
+            produto = self.__buscar_produto_por_codigo(item['codigo'])
+            if produto:
+                produto.set_quantidade(produto.get_quantidade() + item['quantidade'])
+        print("Última venda desfeita com sucesso.")
