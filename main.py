@@ -1,6 +1,7 @@
 from produto import Produto
 from fornecedor import Fornecedor
 from estoque import Estoque
+from caixa import Caixa
 
 # Criando fornecedores
 fornecedor1 = Fornecedor("Fornecedor A", "12345678000101", "fornecedorA@email.com", "899999999")
@@ -11,29 +12,51 @@ produto1 = Produto("Notebook", 15, 3500.00, "2025-12-31", "ELE", "ELE0001")
 produto2 = Produto("Mouse", 25, 80.00, "2026-06-15", "INF", "INF0002")
 produto3 = Produto("Teclado Mecânico", 10, 280, "2027-06-15", "INF", "INF0003")
 
-# Criando o estoque
+# Criando e configurando estoque
 estoque = Estoque()
-
-# Adicionando produtos ao estoque
 estoque.adicionar_produto(produto1)
 estoque.adicionar_produto(produto2)
 estoque.adicionar_produto(produto3)
 
-# Listando produtos no estoque
-estoque.listar_produtos()
+# Criando e configurando caixa
+caixa = Caixa(estoque)
 
-# Simulando uma venda
+# Listando produtos no estoque
+print("\n=== ESTOQUE INICIAL ===")
+for p in estoque.get_produtos():
+    p.exibir_dados()
+
+# Processando vendas através do caixa
+print("\n==> ABRINDO CAIXA E PROCESSANDO VENDAS...")
+caixa.abrir_caixa()
+
 vendas = [
-    (produto1.get_codigo(), 5),   # Vendendo 5 notebooks
-    (produto2.get_codigo(), 12), # Vendendo 12 mouses
-    (produto3.get_codigo(), 2)   # Vendendo 2 teclados mecânicos
+    {'codigo': 'ELE0001', 'quantidade': 5},   # Vendendo 5 notebooks
+    {'codigo': 'INF0002', 'quantidade': 12},  # Vendendo 12 mouses
+    {'codigo': 'INF0003', 'quantidade': 2}    # Vendendo 2 teclados mecânicos
 ]
 
-print("\n==> Baixando estoque por venda...")
-estoque.baixar_estoque_por_venda(vendas)
+caixa.finalizar_compra(vendas)
 
-# Mostrando resumo do estoque
-estoque.resumo_estoque()
+# Fechando caixa e exibindo resumo
+print("\n==> FECHANDO CAIXA...")
+resumo = caixa.fechar_caixa()
 
-# Verificando produtos com estoque baixo
-estoque.verificar_alerta_estoque_baixo()
+# Exibindo estoque atualizado
+print("\n=== ESTOQUE APÓS VENDAS ===")
+for p in estoque.get_produtos():
+    p.exibir_dados()
+
+# Exibindo alertas de estoque baixo
+print("\n=== ALERTAS DE ESTOQUE ===")
+caixa.emitir_alerta_estoque_baixo()
+
+# Exibindo resumo detalhado das vendas
+print("\n=== RESUMO FINANCEIRO ===")
+print(f"Total de itens vendidos: {resumo['total_itens']}")
+print(f"Valor total vendido: R${resumo['total_valor']:.2f}")
+print("Detalhes das vendas:")
+for i, venda in enumerate(resumo['vendas'], 1):
+    print(f"\nVenda {i}:")
+    for item in venda['itens']:
+        print(f" - {item['nome']} ({item['codigo']}): {item['quantidade']}x R${item['preco_unitario']:.2f} = R${item['total']:.2f}")
