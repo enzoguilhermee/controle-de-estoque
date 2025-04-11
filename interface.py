@@ -91,7 +91,7 @@ class Aplicacao:
             quantidade = int(simpledialog.askstring("Produto", "Quantidade:"))
             validade = simpledialog.askstring("Produto", "Validade (YYYY-MM-DD):")
             sessao = simpledialog.askstring("Produto", "Sessão (ex: Laticínios, Grãos):")
-            codigo = simpledialog.askstring("Produto", "Código do produto (ex: GRA0001):")
+            codigo = simpledialog.askstring("Produto", "Código do produto:")
 
             produto = Produto(nome, preco, quantidade, validade, sessao, codigo)
             self.estoque.adicionar_produto(produto)
@@ -136,8 +136,15 @@ class Aplicacao:
         try:
             lista_codigos = codigos.split(",")
             lista_quantidades = list(map(int, quantidades.split(",")))
-            itens = list(zip(lista_codigos, lista_quantidades))
-            self.caixa.realizar_venda(itens, self.estoque)
+
+            # Constrói a lista como dicionários
+            itens = []
+            for codigo, qtd in zip(lista_codigos, lista_quantidades):
+                itens.append({'codigo': codigo.strip(), 'quantidade': qtd})
+
+            self.caixa.finalizar_compra(itens)
+            messagebox.showinfo("Sucesso!", "Compra finalizada!")
+
         except Exception as e:
             messagebox.showerror("Erro", str(e))
 

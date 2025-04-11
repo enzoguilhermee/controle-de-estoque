@@ -35,12 +35,12 @@ class Estoque:
                 print(f"Produto {produto.get_nome()} adicionado ao estoque com sucesso!")
         else:
             raise TypeError("O item adicionado deve ser uma instância da classe Produto.")
-
+        
         
 
     # Usa get_codigo() para comparar, se o produto for encontrado e tiver estoque suficiente, reduz, Caso contrário levanta erro com raise.
     def remover_produto_por_codigo(self, codigo: str, quantidade: int):
-        for produto in self.__produtos:
+        for produto in self.__produtos.values():
             if produto.get_codigo() == codigo:
                 if produto.get_quantidade() >= quantidade:
                     produto.set_quantidade(produto.get_quantidade() - quantidade)
@@ -62,14 +62,14 @@ class Estoque:
     #Usa apenas os getters e um for simples para mostrar tudo.
     def resumo_estoque(self):
         print("\n=== RESUMO DO ESTOQUE ===")
-        for produto in self.__produtos:
+        for produto in self.__produtos.values():
             print(f"{produto.get_nome()} ({produto.get_codigo()}): {produto.get_quantidade()} unidades")
 
 
     #Simples if para checar o estoque de cada item, exibe apenas os que estão com estoque crítico (≤10).
     def verificar_alerta_estoque_baixo(self):
         print("\n=== ALERTAS DE ESTOQUE BAIXO ===")
-        for produto in self.__produtos:
+        for produto in self.__produtos.values():
             if produto.get_quantidade() <= 10:
                 print(f"ALERTA: {produto.get_nome()} ({produto.get_codigo()}) está com baixo estoque: {produto.get_quantidade()} unidades")
 

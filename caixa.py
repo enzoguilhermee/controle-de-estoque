@@ -81,7 +81,7 @@ class Caixa:
             return None
 
     def __buscar_produto_por_codigo(self, codigo):
-        for produto in self.__estoque.get_produtos():
+        for produto in self.__estoque.get_produtos().values():
             if produto.get_codigo() == codigo:
                 return produto
         return None
