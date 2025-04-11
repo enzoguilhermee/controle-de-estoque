@@ -4,13 +4,19 @@ class Caixa:
         self.__caixa_aberto = False
         self.__vendas = []
 
-    def abrir_caixa(self):
-        if self.__caixa_aberto:
-            print("O caixa já está aberto.")
-            return
-        self.__caixa_aberto = True
-        self.__vendas = []
-        print("Caixa aberto com sucesso.")
+
+    def is_caixa_aberto(self):
+    return self.__caixa_aberto
+
+    
+   def abrir_caixa(self):
+    if self.__caixa_aberto:
+        print("O caixa já está aberto.")
+        return False
+    self.__caixa_aberto = True
+    self.__vendas = []
+    print("Caixa aberto com sucesso.")
+    return True
 
     def fechar_caixa(self):
         if not self.__caixa_aberto:
