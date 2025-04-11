@@ -1,4 +1,5 @@
 from produto import Produto
+from fornecedor import Fornecedor
 
 def main():
     # Criando dois produtos
@@ -26,5 +27,20 @@ def main():
     print(f"Nome do produto 2: {produto2.get_nome()}")
     print(f"Código do produto 2: {produto2.get_codigo()}")
 
+    # Criando fornecedor
+    fornecedor1 = Fornecedor("Fornecedor Bom de Bola", "12345678901234", "fornecedor@email.com", "79999999999")
+    fornecedor1.adicionar_produto("LAT0001")
+    fornecedor1.adicionar_produto("GRA0001")
+
+    print("== FORNECEDOR CADASTRADO ==")
+    fornecedor1.exibir_dados()
+
+    try:
+        fornecedor_invalido = Fornecedor("", "", "", "")
+    except ValueError as e:
+        print(f"Erro ao cadastrar fornecedor: {e}")
+        
 if __name__ == "__main__":
     main()
+
+
