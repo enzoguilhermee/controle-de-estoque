@@ -3,7 +3,16 @@ from produto import Produto
 class Estoque:
     def __init__(self):
         self.__produtos = []
+        self.__sessoes = []
 
+
+    #Esses métodos de sessão foram acrescentados após a criação da classe sessão
+    def adicionar_sessao(self, sessao):
+        self.__sessoes.append(sessao)
+
+    def listar_sessoes(self):
+        for sessao in self.__sessoes:
+            print(f"{sessao.get_nome()} - {sessao.get_descricao()}")
 
     #getter e setters
     #produtos
