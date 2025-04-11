@@ -170,8 +170,10 @@ class Aplicacao:
     def cadastrar_fornecedor(self):
         nome = simpledialog.askstring("Fornecedor", "Nome do fornecedor:")
         cnpj = simpledialog.askstring("Fornecedor", "CNPJ do fornecedor:")
+        email = simpledialog.askstring("Fornecedor", "Email do fornecedor")
+        telefone = simpledialog.askstring("Fornecedor", "Telefone do fornecedor")
         if nome and cnpj:
-            fornecedor = Fornecedor(nome, cnpj)
+            fornecedor = Fornecedor(nome, cnpj, email, telefone)
             self.fornecedores.append(fornecedor)
             messagebox.showinfo("Sucesso", "Fornecedor cadastrado.")
         else:
