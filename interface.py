@@ -81,7 +81,7 @@ class Aplicacao:
         return messagebox.showinfo("Seja bem-vindo(a)!", "Caixa aberto com sucesso!")
     def fechar_caixa(self):
         self.caixa.fechar_caixa()
-
+        return messagebox.showinfo("Volte sempre!", "Caixa fechado com sucesso!")
     def adicionar_produto(self):
         try:
             nome = simpledialog.askstring("Produto", "Nome do produto:")
