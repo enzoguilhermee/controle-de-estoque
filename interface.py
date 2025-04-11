@@ -91,8 +91,9 @@ class Aplicacao:
             quantidade = int(simpledialog.askstring("Produto", "Quantidade:"))
             validade = simpledialog.askstring("Produto", "Validade (YYYY-MM-DD):")
             sessao = simpledialog.askstring("Produto", "Sessão (ex: Laticínios, Grãos):")
+            codigo = simpledialog.askstring("Produto", "Código do produto (ex: GRA0001):")
 
-            produto = Produto(nome, preco, quantidade, validade, sessao)
+            produto = Produto(nome, preco, quantidade, validade, sessao, codigo)
             self.estoque.adicionar_produto(produto)
             messagebox.showinfo("Sucesso", f"Produto {nome} adicionado!")
         except Exception as e:
