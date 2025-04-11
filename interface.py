@@ -78,7 +78,7 @@ class Aplicacao:
 
     def abrir_caixa(self):
         self.caixa.abrir_caixa()
-
+        return messagebox.showinfo("Seja bem-vindo(a)!", "Caixa aberto com sucesso!")
     def fechar_caixa(self):
         self.caixa.fechar_caixa()
 
